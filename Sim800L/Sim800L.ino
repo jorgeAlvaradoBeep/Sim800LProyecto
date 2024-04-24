@@ -1,12 +1,15 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(8, 9);
+int ledPin = 13;
 volatile bool flag = false;  // Variable utilizada para comunicar entre ISR y el loop principal
 int sensorPin=2;
 
 void setup() {
   Serial.begin(9600);
   mySerial.begin(9600);
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin,LOW);
   pinMode(sensorPin, INPUT);  // Configura el pin 2 como entrada con resistencia de pull-up
   attachInterrupt(0, myISR, FALLING); // Configura la interrupción
   interrupts(); 
@@ -17,6 +20,8 @@ void setup() {
 
   mySerial.println("AT");
   updateSerial();
+  digitalWrite(ledPin,HIGH);
+
 }
 
 void loop() {
@@ -32,7 +37,7 @@ void pulseReceive()
 {
   mySerial.println("AT+CMGF=1"); 
   updateSerial();
-  mySerial.println("AT+CMGS=\"+523314575853\""); // enter your phone number here (prefix country code)
+  mySerial.println("AT+CMGS=\"+523322893377\""); // enter your phone number here (prefix country code)
   updateSerial();
   mySerial.print("Nivel De tinaco bajo"); // enter your message here
   updateSerial();
